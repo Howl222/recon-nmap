@@ -44,5 +44,22 @@ fuzz.sh [Options] [IP/DIR]
        -a          Hide words (Default: 0, Only with subdomain enumeration)
        -c          Hide code (Default: 404)
 ```
+### To do:
+
+**recon.sh:**
+
+- [ ] Implement function fuzzing with http open ports
+- [ ] Recon OS with icmp
+- [ ] Create a file with open ports and services for taking notes (notes.txt)
+- [ ] Execute nikto with all http ports in background
+- [ ] Execute whatweb with all http ports 
+    
+**fuzz.sh**
+
+- [ ] Option -a for all options
+- [ ] Create one file with the webpage structure, that file updates the content  
+
+
+
 
 

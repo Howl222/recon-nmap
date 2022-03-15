@@ -48,16 +48,16 @@ fuzz.sh [Options] [IP/DIR]
 
 **recon.sh:**
 
-- [ ] Implement function fuzzing with http open ports
-- [ ] Recon OS with icmp
+- [X] Implement function fuzzing with http open ports
+- [X] Recon OS with icmp
 - [ ] Create a file with open ports and services for taking notes (notes.txt)
-- [ ] Execute nikto with all http ports in background
-- [ ] Execute whatweb with all http ports 
+- [X] Execute nikto with all http ports in background
+- [X] Execute whatweb with all http ports 
     
 **fuzz.sh**
 
 - [ ] Option -a for all options
-- [ ] Create one file with the webpage structure, that file updates the content  
+- [X] Create one file with the webpage structure, that file updates the content  
 
 
 

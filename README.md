@@ -34,6 +34,7 @@ recon.sh [Options] [IP]
        -B          Basic TCP Scan (Default)
        -C          Scan by TCP and UDP
        -A          Scan by TCP, UDP and vuln Scan
+       -h  --help  Help
 ```
 ### Fuzz Usage:
 ```
@@ -43,8 +44,12 @@ fuzz.sh [Options] [IP/DIR]
        -w          Wordlist (Default: directory-list-2.3-medium)
        -s          Subdomains (Default wordlist: subdomains-top1million-110000.txt)
        -n          Don't follow redirect
-       -a          Hide words (Default: 0, Only with subdomain enumeration)
-       -c          Hide code (Default: 404)
+       -a          Don't auto calibrate subdomain enumeration
+       -c          Hide code 
+       -hw         Hide words
+       -l          Fuzzing https
+       -z          Extra options for Ffuf
+       -h  --help  Help
 ```
 
 

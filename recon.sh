@@ -4,14 +4,12 @@
 function ctrlC(){
 	echo -e "\n\n[-]Exit..."
 	exitCode 1
-	exit 1
 }
 
 trap ctrlC SIGINT
 tput civis
 
 function exitCode(){
-	rm "allPorts.txt" "allPortsUDP.txt" &>/dev/null
 	tput cnorm
 	exit "$1"
 }
@@ -39,6 +37,11 @@ function scanTCP(){
 
     ports=$(grep -oP '\d{1,5}/open' "allPorts.txt" | awk '{print $1}' FS='/' | xargs | tr ' ' ',')
 
+	if [[ -z $ports ]]; then
+		echo -e "[+]All ports TCP are close\n"
+		return 0
+	fi
+
 	echo -e "[+]Open Ports: $ports\n"
 
 	echo -e "[+]Scanning Services:\n"
@@ -58,14 +61,19 @@ function scanTCP(){
 function scanUDP(){
 
 	echo -e "\n[*]Starting Scanning UDP Ports\n"
-	nmap -sU --top-ports 10000 --min-rate 5000 "$ip" -oG "allPortsUDP.txt" &> /dev/null
+	nmap -sU --top-ports 100 "$ip" -oN "allPortsUdp.txt" &> /dev/null
 
     local ports
-	ports=$(grep -oP '\d{1,5}/open' "allPortsUDP.txt" | awk '{print $1}' FS='/' | xargs | tr ' ' ',')
+	ports=$(grep '/udp' allPortsUdp.txt | cut -d ' ' -f1 | cut -d '/' -f1 | tr '\n' ',')
+
+	if [[ -z $ports ]]; then
+		echo -e "[+]All ports UDP are close\n"
+		return 0
+	fi
 
 	echo -e "[+]Open Ports: $ports\n"
 
-	echo -e "[+]Scanning Services:\n"
+	echo -e "[+]Scanning UDP Services:\n"
 
 	nmap -sU -sC -sV "-p$ports" "$ip" -Pn -oN "targetedUDP.txt" &> /dev/null
 
@@ -77,10 +85,12 @@ function vulnScan(){
 
 
 
-	if [[ -z "$ports" ]]; then
-		echo -e "[-]You have to do a scan for tcp"
+	if [[ ! -e "allPorts.txt" ]]; then
+		echo -e "\n[-]File allPorts.txt don't exist"
 		scanTCP false
 	fi
+
+	ports=$(grep -oP '\d{1,5}/open' "allPorts.txt" | awk '{print $1}' FS='/' | xargs | tr ' ' ',')
 
 	echo -e "\n[*]Starting Vuln Scan\n"
 
@@ -95,7 +105,12 @@ function osDiscovery(){
 
 	echo -e "\n[*]OS Discovery:\n"
 
-	ttl=$(ping -c 1 "$ip" | grep "ttl" | cut -d " " -f6 | cut -d '=' -f2)
+	ttl=$(timeout 2 ping -c 1 "$ip" | grep "ttl" | cut -d " " -f6 | cut -d '=' -f2)
+
+	if [[ -z $ttl ]]; then 
+		echo -e "[-] The computer doesn't send ICMP paquet back"
+		return 0
+	fi
 
 	if (( "$ttl" >= 0 && "$ttl" <= 64 )); then
 		echo -e "[+] The server is Linux"
@@ -110,13 +125,13 @@ function httpScan(){
 
 	local httpPorts 
 	
-	httpPorts=$(grep http targeted.txt | grep -oP '\d{1,5}/tcp' | awk -F '/' '{print $1}')
+	httpPorts=$(grep http targeted.txt | grep -Ev "Microsoft HTTPAPI|Microsoft Windows RPC"|  grep -oP '\d{1,5}/tcp' | awk -F '/' '{print $1}')
 
-	cont=$(echo "$httpPorts" | tr '\n' ',' | grep -o "," | wc -l)
-
-	if (( "$cont" == 0 )); then
+	if [[ -z "$httpPorts" ]]; then
 		return 0
 	fi
+
+	cont=$(echo "$httpPorts" | wc -l)
 
 	echo -e "[*]HTTP Scan\n"
 
@@ -216,7 +231,7 @@ while [[ -n $1 ]]; do
 done
 
 if $doBasicTCPScan ; then
-	basicTCPScan false
+	basicTCPScan
 fi
 
 if $doCompleteScan ; then

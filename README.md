@@ -12,15 +12,17 @@ The fuzz script is used for automated fuzzing on http servers with the most comm
 **Kali:**
                    
 ```
-apt -y install seclists
-pip install wfuzz
+sudo apt -y install seclists
+sudo apt install ffuf
 ```
                    
 **Other Linux:**
                    
 ```
-git clone https://github.com/danielmiessler/SecLists /usr/share/seclists
-pip install wfuzz
+sudo git clone https://github.com/danielmiessler/SecLists /usr/share/seclists
+sudo apt install nmap
+sudo apt install ffuf
+sudo apt-get install -y whatweb 
 ```
 
 ### Recon Usage:
@@ -44,20 +46,7 @@ fuzz.sh [Options] [IP/DIR]
        -a          Hide words (Default: 0, Only with subdomain enumeration)
        -c          Hide code (Default: 404)
 ```
-### To do:
 
-**recon.sh:**
-
-- [X] Implement function fuzzing with http open ports
-- [X] Recon OS with icmp
-- [ ] Create a file with open ports and services for taking notes (notes.txt)
-- [X] Execute nikto with all http ports in background
-- [X] Execute whatweb with all http ports 
-    
-**fuzz.sh**
-
-- [ ] Option -a for all options
-- [X] Create one file with the webpage structure, that file updates the content  
 
 
 

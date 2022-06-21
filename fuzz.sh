@@ -24,17 +24,17 @@ tput civis
 function help(){
 
 	echo -e "\n[+]Usage: $0 [Options] [IP/DIR]\n"
-	echo -e "\t\t-e \t\t\tExtensions (Ex: php,html,txt)"
-	echo -e "\t\t-o \t\t\tOutput File"
-	echo -e "\t\t-w \t\t\tWordlist (Default: directory-list-2.3-medium)"
-	echo -e "\t\t-n \t\t\tDon't follow redirect"
-	echo -e "\t\t-c \t\t\tHide code "
-	echo -e "\t\t-hw \t\t\tHide Words"
-	echo -e "\t\t-l \t\t\tHttps mode"
-	echo -e "\t\t-s \t\t\tSubdomains enumeration(Default wordlist: subdomains-top1million-110000.txt)"
-	echo -e "\t\t-a \t\t\tAuto calibrate (Default: True) Only for subdomain enumeration"
-	echo -e "\t\t-z \t\t\tExtra options for Ffuf"
-	exitFunc
+	echo -e "\t\t-e  [Extensions]\t\tExtensions (Ex: php,html,txt)"
+	echo -e "\t\t-o  [Output]\t\t\tOutput File"
+	echo -e "\t\t-w  [Wordlist]\t\t\tWordlist (Default: directory-list-2.3-medium)"
+	echo -e "\t\t-n \t\t\t\tDon't follow redirect"
+	echo -e "\t\t-c  [Code]\t\t\tHide code "
+	echo -e "\t\t-hw [Words]\t\t\tHide Words"
+	echo -e "\t\t-l \t\t\t\tHttps mode"
+	echo -e "\t\t-s \t\t\t\tSubdomains enumeration(Default wordlist: subdomains-top1million-110000.txt)"
+	echo -e "\t\t-a \t\t\t\tAuto calibrate (Default: True) Only for subdomain enumeration"
+	echo -e "\t\t-z [Options]\t\t\tExtra options for Ffuf"
+	exitFunc 0
 }
 
 function createOutputFile(){
